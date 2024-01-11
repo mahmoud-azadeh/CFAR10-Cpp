@@ -2,9 +2,6 @@
 
 The `cfar10.cpp` file is a simple C++ program that reads the CFAR10 binary files, which are available at here (https://www.cs.toronto.edu/~kriz/cifar.html).
 
-The `cfar` class reads the binary files and creates three datasets: train, validation, and test. 
-Each dataset contains three variables: `X`, `y`, and `cardinality`. These variables correspond to features, labels, and the length of the dataset, respectively.
-
 -----
 To compile and run the C++ code in Linux:
 ```bash
@@ -19,7 +16,9 @@ unsigned int num_test  = 1000;  // number of test samples
 unsigned int num_val   = 1000;  // number of validation samples
  ```
  -----
- The object `cfa10` is an instance of the class `cfar`, it is assumed the the CFAR10 binary files are saved at the folder `"./cifar-10-binary/"`.
+ The object `cfa10` is an instance of the class `cfar`, it is assumed that the CFAR10 binary files are saved at the folder `"./cifar-10-binary/"`.
+ The `cfar` class reads the binary files and creates three datasets: train, validation, and test. 
+Each dataset contains three variables: `X`, `y`, and `cardinality`. These variables correspond to features, labels, and the length of the dataset, respectively.
 ```Cpp
 std::string dir = "./cifar-10-binary/"; // the folder path for CAFAR10 files
 uiuc::cfar cfar10(dir, num_train, num_test, num_val);
