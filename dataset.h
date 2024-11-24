@@ -44,10 +44,11 @@ namespace uiuc {
 		unsigned int col = 3072; // number of column features (32*32*3)
 		unsigned int file_samples = 10000; // number of samples in each bin-file
 		
-		struct datastruct <uint8_t, uint8_t> read_cifar10(std::string file_path, 
-														  unsigned int image_num = 10000, 
-														  int batch_num = 1, 
-														  unsigned int readPosition = 0);
+		int read_cifar10(const std::string file_path,
+						struct datastruct <uint8_t, uint8_t> &cfar10Data,	
+						const int &image_num,	
+						const int &batch_num,
+						unsigned int readPosition = 0);
 
 		
 	};	
@@ -72,22 +73,39 @@ namespace uiuc {
 			val_num = Nval_num;
 
 		std::cout << "\nTrain dataset:";
-		train_dataset = read_cifar10(directory + '/' + train_file_name, train_num, train_batch_num);
+		train_dataset.X.resize(train_num, std::vector<uint8_t>(col));
+		train_dataset.y.resize(train_num);
+		read_cifar10(directory + '/' + train_file_name, 
+				train_dataset,
+				train_num,
+				train_batch_num);
+		
 		std::cout << "\nTest dataset:";
-		test_dataset  = read_cifar10(directory + '/' + test_file_name,  test_num,  test_batch_num);
+		test_dataset.X.resize(test_num, std::vector<uint8_t>(col));
+		test_dataset.y.resize(test_num);
+		read_cifar10(directory + '/' + test_file_name,
+					test_dataset,
+					test_num,
+					test_batch_num);
+		
 		std::cout << "\nValidation dataset:";
-		val_dataset   = read_cifar10(directory + '/' + train_file_name, val_num, val_batch_num, train_num);
+		val_dataset.X.resize(val_num, std::vector<uint8_t>(col));
+		val_dataset.y.resize(val_num);
+		read_cifar10(directory + '/' + train_file_name,
+					val_dataset,
+					val_num,
+					val_batch_num, 
+					train_num);
 		
 	}
 
-	struct datastruct <uint8_t, uint8_t> cfar::read_cifar10(std::string file_path, 
-															unsigned int image_num, 
-															int batch_num, 
-															unsigned int readPosition)
+	int cfar::read_cifar10(const std::string file_path,
+							struct datastruct <uint8_t, uint8_t> &cfar10Data,
+							const int &image_num,
+							const int &batch_num, 
+							unsigned int readPosition)
 	{				
-		struct datastruct<uint8_t, uint8_t> cfar10Data;
-		cfar10Data.X.resize(image_num, std::vector<uint8_t>(col));
-		cfar10Data.y.resize(image_num);
+		
 		unsigned int mindex = 0;
 		for (int ibatch = 0; ibatch < batch_num; ibatch++)
 		{
@@ -136,6 +154,6 @@ namespace uiuc {
 		// std::cout << "\n------------------------------------------------\n";
 
 		cfar10Data.cardinality = mindex;
-		return cfar10Data;
+		return 0; 
 	}
 }
